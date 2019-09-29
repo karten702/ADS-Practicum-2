@@ -17,7 +17,7 @@ class ChampionSelectorTest {
     public void createComparator() {
         // Instantiate your own comparator here...
         // comparator = new .....();
-        comparator = new Archer.ArcherTotalScoreComparator();
+        comparator = new ArcherTotalScoreComparator();
     }
 
     @Test
