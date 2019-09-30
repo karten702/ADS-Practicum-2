@@ -1,6 +1,5 @@
 package nl.hva.ict.se.ads;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * testing purposes in which case the reason why you need that constructor must be contained in a very clear manner
  * in your report.
  */
-public class Archer {
+public class Archer implements Comparable<Archer> {
     private static final AtomicInteger count = new AtomicInteger(135788);
     public static int MAX_ARROWS = 3;
     public static int MAX_ROUNDS = 10;
@@ -129,6 +128,16 @@ public class Archer {
         return Math.max(min, randomizer.nextInt(11));
     }
 
+	@Override
+	public int compareTo(Archer o) {
+		if (getTotalScore() == o.getTotalScore()) {
+			if (getWeightedScore() == o.getWeightedScore()) {
+				return getId() - o.getId();
+			}
+			return getWeightedScore() - o.getWeightedScore();
+		}
+		return getTotalScore() - o.getTotalScore();
+	}
 
 }
 
@@ -156,8 +165,6 @@ class ArcherIterator implements Iterator<Archer>{
 }
 
 class ArcherTotalScoreComparator implements Comparator<Archer>{
-
-    @Override
     public int compare(Archer a1, Archer a2) {
         if  (a1.getTotalScore()-a2.getTotalScore() == 0){
             if (a1.getWeightedScore()-a2.getWeightedScore() == 0)
