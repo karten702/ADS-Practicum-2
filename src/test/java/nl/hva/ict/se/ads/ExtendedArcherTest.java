@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collection;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -23,7 +24,9 @@ public class ExtendedArcherTest extends ArcherTest {
     }
 
     @Test
-    public void testArchersComparability() {
+    public void archerWeightedScores(){
+        List<Archer> archers = Archer.generateArchers(1);
+        assertEquals(-7, archers.get(0).weighted(0));
+        assertEquals(4, archers.get(0).weighted(3));
     }
-
 }

@@ -130,26 +130,18 @@ public class Archer implements Comparable<Archer> {
 
 	@Override
 	public int compareTo(Archer o) {
-		if (getTotalScore() == o.getTotalScore()) {
-			if (getWeightedScore() == o.getWeightedScore()) {
-				return getId() - o.getId();
-			}
-			return getWeightedScore() - o.getWeightedScore();
-		}
-		return getTotalScore() - o.getTotalScore();
+        return new ArcherTotalScoreComparator().compare(this, o);
 	}
 
 }
 
 class ArcherIterator implements Iterator<Archer>{
-    public int pos;
-    public int max;
-    //public Archer[] archers;
+    private int pos;
+    private int max;
 
     public ArcherIterator(long max){
         pos = 0;
         this.max = (int)max;
-        //archers = new Archer[(int)max];
     }
 
     @Override
