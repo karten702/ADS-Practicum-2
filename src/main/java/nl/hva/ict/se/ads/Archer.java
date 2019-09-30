@@ -1,6 +1,5 @@
 package nl.hva.ict.se.ads;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -104,7 +103,7 @@ public class Archer implements Comparable<Archer> {
      * @return
      */
     public static Iterator<Archer> generateArchers(long nrOfArchers) {
-        return null;
+        return new ArcherIterator(nrOfArchers);
     }
 
     public int getId() {
@@ -129,14 +128,50 @@ public class Archer implements Comparable<Archer> {
         return Math.max(min, randomizer.nextInt(11));
     }
 
+	@Override
+	public int compareTo(Archer o) {
+		if (getTotalScore() == o.getTotalScore()) {
+			if (getWeightedScore() == o.getWeightedScore()) {
+				return getId() - o.getId();
+			}
+			return getWeightedScore() - o.getWeightedScore();
+		}
+		return getTotalScore() - o.getTotalScore();
+	}
+
+}
+
+class ArcherIterator implements Iterator<Archer>{
+    public int pos;
+    public int max;
+    //public Archer[] archers;
+
+    public ArcherIterator(long max){
+        pos = 0;
+        this.max = (int)max;
+        //archers = new Archer[(int)max];
+    }
+
     @Override
-    public int compareTo(Archer o) {
-        if (getTotalScore() == o.getTotalScore()) {
-            if (getWeightedScore() == o.getWeightedScore()) {
-                return getId() - o.getId();
-            }
-            return getWeightedScore() - o.getWeightedScore();
+    public boolean hasNext() {
+        return pos < max;
+    }
+
+    @Override
+    public Archer next() {
+        pos++;
+        return Archer.generateArchers(1).get(0);
+    }
+}
+
+class ArcherTotalScoreComparator implements Comparator<Archer>{
+    public int compare(Archer a1, Archer a2) {
+        if  (a1.getTotalScore()-a2.getTotalScore() == 0){
+            if (a1.getWeightedScore()-a2.getWeightedScore() == 0)
+                return a1.getId()-a2.getId();
+
+            return a1.getWeightedScore()-a2.getWeightedScore();
         }
-        return getTotalScore() - o.getTotalScore();
+        return a1.getTotalScore()-a2.getTotalScore();
     }
 }
