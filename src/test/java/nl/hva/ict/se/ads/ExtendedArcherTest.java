@@ -2,6 +2,7 @@ package nl.hva.ict.se.ads;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,6 +15,9 @@ public class ExtendedArcherTest extends ArcherTest {
     @Test
     public void archerIdsIncreaseCorrectly() {
         List<Archer> archers = Archer.generateArchers(200);
+        for(Archer archer : archers){
+            System.out.println(archer.getId());
+        }
         assertTrue(archers.get(1).getId() == archers.get(0).getId()+ 1);
         assertTrue(archers.get(2).getId() == archers.get(1).getId()+ 1);
     }
