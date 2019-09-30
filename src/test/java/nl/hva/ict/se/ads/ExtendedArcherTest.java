@@ -18,4 +18,8 @@ public class ExtendedArcherTest extends ArcherTest {
         assertTrue(archers.get(2).getId() == archers.get(1).getId()+ 1);
     }
 
+    @Test
+    public void testArchersComparability() {
+    }
+
 }

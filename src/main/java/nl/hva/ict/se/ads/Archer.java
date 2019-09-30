@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * testing purposes in which case the reason why you need that constructor must be contained in a very clear manner
  * in your report.
  */
-public class Archer implements Comparable {
+public class Archer implements Comparable<Archer> {
     private static final AtomicInteger count = new AtomicInteger(135788);
     public static int MAX_ARROWS = 3;
     public static int MAX_ROUNDS = 10;
@@ -130,7 +130,13 @@ public class Archer implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        return 0;
+    public int compareTo(Archer o) {
+        if (getTotalScore() == o.getTotalScore()) {
+            if (getWeightedScore() == o.getWeightedScore()) {
+                return getId() - o.getId();
+            }
+            return getWeightedScore() - o.getWeightedScore();
+        }
+        return getTotalScore() - o.getTotalScore();
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChampionSelectorTest {
+    // are we still using this? Archer implements Comparable, why would we need this?
     protected Comparator<Archer> comparator;
 
     @BeforeEach
