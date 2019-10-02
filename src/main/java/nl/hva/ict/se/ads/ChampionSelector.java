@@ -18,20 +18,21 @@ public class ChampionSelector {
     }
 
     /**
-     * This method uses either selection sort or insertion sort for sorting the archers.
+     * This method uses selection sort for sorting the archers.
      */
     public static List<Archer> selInsSort(List<Archer> archers, Comparator<Archer> scoringScheme) {
 
         for (int i = 0; i < archers.size(); i++){
-            int pos = i;
+            // Find lowest scoring archer
+            int min = i;
             for (int j = i+1; j < archers.size(); j++){
-                if (scoringScheme.compare(archers.get(j), archers.get(pos)) < 0){
-                    pos = j;
+                if (scoringScheme.compare(archers.get(j), archers.get(min)) < 0){
+                    // Found new lowest
+                    min = j;
                 }
             }
-            Archer smallerArcher = archers.get(pos);
-            archers.set(pos, archers.get(i));
-            archers.set(i, smallerArcher);
+            // swap lowest scoring archer with the first element of the loop
+            swap(archers, min, i);
         }
 
         return archers;

@@ -50,30 +50,60 @@ public class Archer implements Comparable<Archer> {
      * @param points the points shot during the round.
      */
     public void registerScoreForRound(int round, int[] points) {
-        for(int point : points){
-            weightedScore += weighted(point);
-            totalScore += point;
+        if (round >= scorePerRound.size()) {
+            scorePerRound.add(round, points);
+            for (int score : points) {
+                totalScore += score;
+                weightedScore += weighted(score);
+            }
+        } else {
+            scorePerRound.set(round, points);
+            recalculateScores();
         }
-        scorePerRound.add(round, points);
+    }
+
+    private void recalculateScores() {
+        totalScore = 0;
+        weightedScore = 0;
+        for (int[] scores : scorePerRound) {
+            for (int points : scores) {
+                totalScore += points;
+                weightedScore += weighted(points);
+            }
+        }
+    }
+
+    public void clearScores() {
+        scorePerRound = new ArrayList<>();
+        totalScore = 0;
+        weightedScore = 0;
     }
 
     public int getTotalScore() {
         return this.totalScore;
     }
 
-    public int getWeightedScore(){
+    public int getWeightedScore() {
         return this.weightedScore;
     }
 
-    public int weighted(int score){
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public void setWeightedScore(int weightedScore) {
+        this.weightedScore = weightedScore;
+    }
+
+    public int weighted(int score) {
         if (score == 0)
             return -7;
-        return score+1;
+        return score + 1;
     }
 
     @Override
     public String toString() {
-        return  id + " (" + getTotalScore() + "/" + getWeightedScore() + ") " + firstName + " " + lastName;
+        return id + " (" + getTotalScore() + "/" + getWeightedScore() + ") " + firstName + " " + lastName;
     }
 
     /**
@@ -128,28 +158,20 @@ public class Archer implements Comparable<Archer> {
         return Math.max(min, randomizer.nextInt(11));
     }
 
-	@Override
-	public int compareTo(Archer o) {
-		if (getTotalScore() == o.getTotalScore()) {
-			if (getWeightedScore() == o.getWeightedScore()) {
-				return getId() - o.getId();
-			}
-			return getWeightedScore() - o.getWeightedScore();
-		}
-		return getTotalScore() - o.getTotalScore();
-	}
+    @Override
+    public int compareTo(Archer o) {
+        return new ArcherTotalScoreComparator().compare(this, o);
+    }
 
 }
 
-class ArcherIterator implements Iterator<Archer>{
-    public int pos;
-    public int max;
-    //public Archer[] archers;
+class ArcherIterator implements Iterator<Archer> {
+    private int pos;
+    private int max;
 
-    public ArcherIterator(long max){
+    public ArcherIterator(long max) {
         pos = 0;
-        this.max = (int)max;
-        //archers = new Archer[(int)max];
+        this.max = (int) max;
     }
 
     @Override
@@ -164,14 +186,14 @@ class ArcherIterator implements Iterator<Archer>{
     }
 }
 
-class ArcherTotalScoreComparator implements Comparator<Archer>{
+class ArcherTotalScoreComparator implements Comparator<Archer> {
     public int compare(Archer a1, Archer a2) {
-        if  (a1.getTotalScore()-a2.getTotalScore() == 0){
-            if (a1.getWeightedScore()-a2.getWeightedScore() == 0)
-                return a1.getId()-a2.getId();
+        if (a1.getTotalScore() - a2.getTotalScore() == 0) {
+            if (a1.getWeightedScore() - a2.getWeightedScore() == 0)
+                return a1.getId() - a2.getId();
 
-            return a1.getWeightedScore()-a2.getWeightedScore();
+            return a1.getWeightedScore() - a2.getWeightedScore();
         }
-        return a1.getTotalScore()-a2.getTotalScore();
+        return a1.getTotalScore() - a2.getTotalScore();
     }
 }
